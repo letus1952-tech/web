@@ -5,18 +5,18 @@
 
 🖥️ **Servicios destacados**
 
-    - **Desarrollo Web**
+  > **Desarrollo Web**
     
-    - **Creación de sitios modernos y responsivos adaptados a tus necesidades.**
+  > **Creación de sitios modernos y responsivos adaptados a tus necesidades.**
  
     
-    - **Consultoría IT**
+  > **Consultoría IT**
     
-    -**Asesoramiento experto para optimizar tus procesos tecnológicos.**
+  > **Asesoramiento experto para optimizar tus procesos tecnológicos.**
     
-    -**Soporte Técnico**
+  > **Soporte Técnico**
     
-    -**Soporte continuo para garantizar el funcionamiento de tus sistemas.**>
+  > **Soporte continuo para garantizar el funcionamiento de tus sistemas.**>
 
 
  📬 **Contacto**
