@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaTech | Transformación Digital Innovadora</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- GSAP para animaciones -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    
+    <!-- Three.js para efectos 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        /* Estilos base */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Fondo animado */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        
+        /* Navegación lateral */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-dot.active {
+            background: #8b5cf6;
+            transform: scale(1.3);
+        }
+        
+        .nav-dot::after {
+            content: attr(data-section);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
+        
+        /* Secciones */
+        section {
+            min-height: 100vh;
+            width: 100%;
+            padding: 100px 10%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        /* Efectos de texto */
+        .text-gradient {
+            background: linear-gradient(90deg, #8b5cf6 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Botones */
+        .btn-primary {
+            background: linear-gradient(90deg, #8b5cf6 0%, #3b82f6 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* Tarjetas */
+        .service-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+        
+        /* Animaciones */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Banner Hero mejorado */
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            padding: 0 20px;
+            text-align: center;
+        }
+        
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Efecto de brillo en imagen */
+        .hero-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-dots {
+                display: none;
+            }
+            
+            section {
+                padding: 80px 5%;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo animado con Three.js -->
+    <div id="canvas-container"></div>
+    
+    <!-- Navegación con puntos -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-section="Inicio" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" data-section="Nosotros" onclick="scrollToSection('about')"></div>
+        <div class="nav-dot" data-section="Servicios" onclick="scrollToSection('services')"></div>
+        <div class="nav-dot" data-section="Equipo" onclick="scrollToSection('team')"></div>
+        <div class="nav-dot" data-section="Contacto" onclick="scrollToSection('contact')"></div>
+    </div>
+    
+    <!-- Menú móvil -->
+    <div class="md:hidden fixed bottom-5 right-5 z-50">
+        <button id="mobile-menu-btn" class="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center text-white shadow-lg">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+    
+    <div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-90 z-40 hidden flex items-center justify-center">
+        <div class="text-center space-y-8">
+            <a href="#hero" class="block text-2xl text-white hover:text-purple-400" onclick="closeMobileMenu()">Inicio</a>
+            <a href="#about" class="block text-2xl text-white hover:text-purple-400" onclick="closeMobileMenu()">Nosotros</a>
+            <a href="#services" class="block text-2xl text-white hover:text-purple-400" onclick="closeMobileMenu()">Servicios</a>
+            <a href="#team" class="block text-2xl text-white hover:text-purple-400" onclick="closeMobileMenu()">Equipo</a>
+            <a href="#contact" class="block text-2xl text-white hover:text-purple-400" onclick="closeMobileMenu()">Contacto</a>
+        </div>
+    </div>
+    
+    <!-- Sección Hero con banner personalizado -->
+    <section id="hero" class="relative p-0">
+        <div class="hero-banner">
+			<img src="https://drive.google.com/uc?export=view&id=1HsLEB8RBBitekUpFaNnozvK8bvpJwbUP" 
+				 alt="NexaTech Transformación Digital" 
+				 class="hero-image">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Transformación <span class="text-gradient">Digital</span> Innovadora
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
+                    Impulsamos tu negocio hacia el futuro con soluciones tecnológicas de vanguardia y estrategias digitales innovadoras.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#services" class="btn-primary px-8 py-4 text-lg inline-flex items-center justify-center">
+                        <span>Nuestros servicios</span>
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#contact" class="px-8 py-4 text-lg border border-gray-400 rounded-full text-white hover:bg-gray-800 transition inline-flex items-center justify-center">
+                        <span>Contáctanos</span>
+                        <i class="fas fa-phone-alt ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+                <i class="fas fa-chevron-down text-2xl text-white"></i>
+            </div>
+        </div>
+    </section>
+    
+    <!-- El resto del código se mantiene igual -->
+    <!-- Sección Nosotros -->
+    <section id="about" class="bg-gradient-to-b from-transparent to-gray-900/50">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6">Sobre <span class="text-gradient">NexaTech</span></h2>
+                <p class="text-gray-300 mb-6">
+                    Somos una agencia de transformación digital comprometida con la innovación tecnológica. 
+                    Nuestro equipo de expertos combina creatividad y conocimiento técnico para ofrecer 
+                    soluciones personalizadas que impulsan el crecimiento de tu negocio.
+                </p>
+                <p class="text-gray-300 mb-8">
+                    Con más de 5 años de experiencia en el mercado, hemos ayudado a más de 200 empresas 
+                    a alcanzar sus objetivos digitales mediante tecnologías de vanguardia.
+                </p>
+                                
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="bg-purple-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-lightbulb text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg">Innovación constante</h4>
+                            <p class="text-gray-400">Siempre a la vanguardia de las últimas tecnologías</p>
+                        </div>
+                    </div>
+                                        
+                    <div class="flex items-start">
+                        <div class="bg-purple-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-user-tie text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg">Enfoque centrado</h4>
+                            <p class="text-gray-400">Soluciones diseñadas para tus necesidades específicas</p>
+                        </div>
+                    </div>
+                                        
+                    <div class="flex items-start">
+                        <div class="bg-purple-600 p-3 rounded-full mr-4">
+                            <i class="fas fa-chart-line text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-lg">Resultados medibles</h4>
+                            <p class="text-gray-400">Impacto tangible en tu negocio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        
+            <div class="md:w-1/2 relative">
+                <div class="floating">
+                    <div class="bg-gradient-to-r from-purple-600 to-blue-500 rounded-2xl p-1 shadow-xl">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                              alt="Equipo NexaTech"
+                              class="w-full h-auto rounded-2xl">
+                    </div>
+                </div>
+                                
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-600 rounded-full opacity-20 blur-3xl"></div>
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-600 rounded-full opacity-20 blur-3xl"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Servicios -->
+    <section id="services" class="bg-gradient-to-b from-gray-900/50 to-gray-900/70">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Nuestros <span class="text-gradient">Servicios</span></h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Soluciones tecnológicas personalizadas para impulsar tu negocio en la era digital.
+                </p>
+            </div>
+                        
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Servicio 1 -->
+                <div class="service-card">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-laptop-code text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Desarrollo Web</h3>
+                    <p class="text-gray-300 mb-4">
+                        Creación de sitios web modernos, responsivos y optimizados para SEO que destacan tu marca en línea.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Diseño UI/UX personalizado
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Desarrollo frontend y backend
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Integración con CMS
+                        </li>
+                    </ul>
+                </div>
+                                
+                <!-- Servicio 2 -->
+                <div class="service-card">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Apps Móviles</h3>
+                    <p class="text-gray-300 mb-4">
+                        Desarrollo de aplicaciones nativas e híbridas para iOS y Android que conectan con tus clientes.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Apps nativas e híbridas
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Diseño intuitivo
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Publicación en stores
+                        </li>
+                    </ul>
+                </div>
+                                
+                <!-- Servicio 3 -->
+                <div class="service-card">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-cogs text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">IoT Solutions</h3>
+                    <p class="text-gray-300 mb-4">
+                        Soluciones IoT que conectan dispositivos y recopilan datos para optimizar tus operaciones.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Sensores inteligentes
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Automatización industrial
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Análisis de datos
+                        </li>
+                    </ul>
+                </div>
+                                
+                <!-- Servicio 4 -->
+                <div class="service-card">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-bar text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Análisis de Datos</h3>
+                    <p class="text-gray-300 mb-4">
+                        Extracción de insights valiosos de tus datos para tomar decisiones empresariales más inteligentes.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Business Intelligence
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Machine Learning
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Visualización de datos
+                        </li>
+                    </ul>
+                </div>
+                                
+                <!-- Servicio 5 -->
+                <div class="service-card">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-print text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Impresión 3D</h3>
+                    <p class="text-gray-300 mb-4">
+                        Prototipado rápido y producción de piezas con tecnología de impresión 3D de última generación.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Diseño CAD
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Prototipado rápido
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Producción en serie
+                        </li>
+                    </ul>
+                </div>
+                                
+                <!-- Servicio 6 -->
+                <div class="service-card">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-tools text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Mantenimiento</h3>
+                    <p class="text-gray-300 mb-4">
+                        Servicios técnicos especializados para mantener tus equipos funcionando al máximo rendimiento.
+                    </p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Mantenimiento preventivo
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Reparación de hardware
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-purple-500 mr-2"></i> Optimización de sistemas
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Equipo -->
+    <section id="team" class="bg-gradient-to-b from-gray-900/70 to-gray-900/90">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Nuestro <span class="text-gradient">Equipo</span></h2>
+                <p class="text-gray-300 max-w-2xl mx-auto">
+                    Profesionales apasionados por la tecnología y comprometidos con la excelencia.
+                </p>
+            </div>
+                        
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Miembro 1 -->
+                <div class="service-card text-center">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-purple-600">
+						 <img src="https://drive.google.com/uc?export=view&id=17vdlz8sGcpw16K3ZuPAn42SzRGTsUMmY"
+							 alt="Imagen NexaTech"
+							 class="w-full h-full object-cover">
+								 </div>
+                    <h3 class="text-xl font-semibold mb-1">Eduardo León</h3>
+                    <p class="text-purple-400 mb-4">CEO & Fundador</p>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Más de 5 años de experiencia en desarrollo de software y liderazgo tecnológico.
+                    </p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                                
+                <!-- Miembro 2 -->
+                <div class="service-card text-center">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-purple-600">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                              alt="Ana Rodríguez"
+                              class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Ana Rodríguez</h3>
+                    <p class="text-purple-400 mb-4">Directora de Tecnología</p>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Especialista en arquitectura de software y soluciones escalables.
+                    </p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+                                
+                <!-- Miembro 3 -->
+                <div class="service-card text-center">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-purple-600">
+                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                              alt="David López"
+                              class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">David López</h3>
+                    <p class="text-purple-400 mb-4">Líder de Desarrollo</p>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Experto en metodologías ágiles y desarrollo de aplicaciones empresariales.
+                    </p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-dribbble"></i>
+                        </a>
+                    </div>
+                </div>
+                                
+                <!-- Miembro 4 -->
+                <div class="service-card text-center">
+                    <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-purple-600">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                              alt="Laura Gómez"
+                              class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-1">Laura Gómez</h3>
+                    <p class="text-purple-400 mb-4">Directora de Proyectos</p>
+                    <p class="text-gray-300 text-sm mb-4">
+                        Experta en gestión de proyectos tecnológicos y metodologías ágiles.
+                    </p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Sección Contacto -->
+    <section id="contact" class="bg-gradient-to-b from-gray-900/90 to-gray-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Contáctanos</h2>
+                    <p class="text-gray-300 mb-8 max-w-lg">
+                        ¿Listo para llevar tu negocio al siguiente nivel? Completa el formulario y nos pondremos en contacto contigo lo antes posible.
+                    </p>
+                                        
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-map-marker-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Ubicación</h4>
+                                <p class="text-gray-400">Bogotá, Colombia</p>
+                            </div>
+                        </div>
+                                                
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-phone-alt text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Teléfono</h4>
+                                <p class="text-gray-400">+57 305 487 4612</p>
+                            </div>
+                        </div>
+                                                
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mr-4">
+                                <i class="fas fa-envelope text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Email</h4>
+                                <p class="text-gray-400">servicionexatech@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                                        
+                    <div class="mt-8 flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-300 hover:text-purple-400 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                                
+                <div class="lg:w-1/2">
+                    <form class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="Nombre" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-white">
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Email" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-white">
+                        </div>
+                        <div>
+                            <input type="tel" placeholder="Teléfono" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-white">
+                        </div>
+                        <div>
+                            <select class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-white">
+                                <option value="" disabled selected>Servicio de interés</option>
+                                <option value="web">Desarrollo Web</option>
+                                <option value="mobile">Apps Móviles</option>
+                                <option value="iot">IoT Solutions</option>
+                                <option value="data">Análisis de Datos</option>
+                                <option value="3d">Impresión 3D</option>
+                                <option value="maintenance">Mantenimiento</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea placeholder="Mensaje" rows="4" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 text-white"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-full py-4 text-lg">
+                            Enviar mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="text-2xl font-bold">
+                        <span class="text-gradient">Nexa</span>Tech
+                    </a>
+                    <p class="text-gray-400 mt-2">Transformación digital innovadora</p>
+                </div>
+                                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-purple-400 transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+                        
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2023 NexaTech. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+ <!-- WhatsApp flotante -->
+    <a href="https://api.whatsapp.com/send?phone=573054874612" class="fixed bottom-8 right-8 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center text-white text-2xl shadow-lg hover:bg-green-600 transition z-50">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    
+    <script>
+        // Configuración del fondo animado con Three.js
+        function initParticles() {
+            const container = document.getElementById('canvas-container');
+            const canvasWidth = container.clientWidth;
+            const canvasHeight = container.clientHeight;
+                        
+            // Escena
+            const scene = new THREE.Scene();
+                        
+            // Cámara
+            const camera = new THREE.PerspectiveCamera(75, canvasWidth / canvasHeight, 0.1, 1000);
+            camera.position.z = 5;
+                        
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(canvasWidth, canvasHeight);
+            container.appendChild(renderer.domElement);
+                        
+            // Partículas
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 500;
+                        
+            const posArray = new Float32Array(particlesCount * 3);
+            const colorArray = new Float32Array(particlesCount * 3);
+                        
+            for(let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 10;
+                colorArray[i] = Math.random();
+            }
+                        
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+                        
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.02,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+                        
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+                        
+            // Animación
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                particlesMesh.rotation.x += 0.001;
+                particlesMesh.rotation.y += 0.001;
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Reajustar en resize
+            window.addEventListener('resize', () => {
+                const newWidth = container.clientWidth;
+                const newHeight = container.clientHeight;
+                
+                camera.aspect = newWidth / newHeight;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(newWidth, newHeight);
+            });
+        }
+        
+        // Inicializar las partículas
+        if (typeof THREE !== 'undefined') {
+            initParticles();
+        }
+        
+        // Navegación por secciones
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Menú móvil
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+        
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+        
+        // Actualizar puntos de navegación al hacer scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navDots = document.querySelectorAll('.nav-dot');
+            let currentSection = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+            
+            navDots.forEach(dot => {
+                dot.classList.remove('active');
+                if (dot.getAttribute('data-section').toLowerCase() === currentSection) {
+                    dot.classList.add('active');
+                }
+            });
+        });
+        
+        // Animaciones con GSAP
+        document.addEventListener('DOMContentLoaded', function() {
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animación de elementos al hacer scroll
+            gsap.utils.toArray('.service-card').forEach(card => {
+                gsap.fromTo(card, 
+                    { opacity: 0, y: 50 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 80%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+            
+            // Animación de títulos
+            gsap.utils.toArray('h2').forEach(title => {
+                gsap.fromTo(title,
+                    { opacity: 0, x: -50 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1,
+                        scrollTrigger: {
+                            trigger: title,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+</html>
