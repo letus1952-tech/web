@@ -28,7 +28,7 @@
     📧 Correo
   </a>
 
-  <a href="https://www.linkedin.com/in/phdleon/" style="background:#0e76a8;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;margin:5px;">
+  <a href="[https://www.linkedin.com/in/phdleon/](https://www.linkedin.com/company/nexatech1/?viewAsMember=true)" style="background:#0e76a8;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;margin:5px;">
     💼 LinkedIn
   </a>
 
