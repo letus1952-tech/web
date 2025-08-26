@@ -1,3 +1,4 @@
-fastapi
-uvicorn
+git add starter/requirements.txt
+git commit -m "Agrego requirements.txt con fastapi y uvicorn"
+git push origin main
 
