@@ -216,14 +216,19 @@
                 font-size: 1.1rem;
             }
         }
+		/* Logo integrado en hero */
+			.logo-hero {
+			  filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.6));
+			  animation: fadeInDown 1s ease-out;
+			}
+
+			@keyframes fadeInDown {
+			  0%   { opacity: 0; transform: translateY(-30px); }
+			  100% { opacity: 1; transform: translateY(0); }
+			}
     </style>
 </head>
-<body>
-	<!-- LOGO -->
-	<div style="text-align:center;padding-top:20px;">
-	  <img src="https://drive.google.com/uc?export=view&id=1jQqHRUQvVivyRSluWGEHYsqKSDFrGQit" alt="Logo" width="200">
-	</div>
-    
+<body>    
 	<!-- Fondo animado con Three.js -->
     <div id="canvas-container"></div>
     
@@ -253,39 +258,46 @@
         </div>
     </div>
     
-    <!-- Sección Hero con banner personalizado -->
-    <section id="hero" class="relative p-0">
-        <div class="hero-banner">
-			<img src="https://drive.google.com/uc?export=view&id=1HsLEB8RBBitekUpFaNnozvK8bvpJwbUP" 
-				 alt="NexaTech Transformación Digital" 
-				 class="hero-image">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                    Transformación <span class="text-gradient">Digital</span> Innovadora
-                </h1>
-                <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
-                    Impulsamos tu negocio hacia el futuro con soluciones tecnológicas de vanguardia y estrategias digitales innovadoras.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#services" class="btn-primary px-8 py-4 text-lg inline-flex items-center justify-center">
-                        <span>Nuestros servicios</span>
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                    <a href="#contact" class="px-8 py-4 text-lg border border-gray-400 rounded-full text-white hover:bg-gray-800 transition inline-flex items-center justify-center">
-                        <span>Contáctanos</span>
-                        <i class="fas fa-phone-alt ml-2"></i>
-                    </a>
-                </div>
-            </div>
-            
-            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
-                <i class="fas fa-chevron-down text-2xl text-white"></i>
-            </div>
-        </div>
-    </section>
-    
-    <!-- El resto del código se mantiene igual -->
+	<!-- Sección Hero con banner personalizado -->
+	<section id="hero" class="relative p-0">
+	  <div class="hero-banner">
+		<img src="https://drive.google.com/uc?export=view&id=1HsLEB8RBBitekUpFaNnozvK8bvpJwbUP" 
+			 alt="NexaTech Transformación Digital" 
+			 class="hero-image">
+		<div class="hero-overlay"></div>
+
+		<div class="hero-content">
+		  <!-- LOGO INTEGRADO -->
+		  <div class="mb-6">
+			<img src="https://raw.githubusercontent.com/eduardoleon9010/webnexa/main/img/logo.png"
+				 alt="Logo NexaTech"
+				 class="mx-auto h-20 md:h-24 object-contain logo-hero">
+		  </div>
+
+		  <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+			Transformación <span class="text-gradient">Digital</span> Innovadora
+		  </h1>
+		  <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
+			Impulsamos tu negocio hacia el futuro con soluciones tecnológicas de vanguardia y estrategias digitales innovadoras.
+		  </p>
+		  <div class="flex flex-col sm:flex-row gap-4 justify-center">
+			<a href="#services" class="btn-primary px-8 py-4 text-lg inline-flex items-center justify-center">
+			  <span>Nuestros servicios</span>
+			  <i class="fas fa-arrow-right ml-2"></i>
+			</a>
+			<a href="#contact" class="px-8 py-4 text-lg border border-gray-400 rounded-full text-white hover:bg-gray-800 transition inline-flex items-center justify-center">
+			  <span>Contáctanos</span>
+			  <i class="fas fa-phone-alt ml-2"></i>
+			</a>
+		  </div>
+		</div>
+
+		<div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+		  <i class="fas fa-chevron-down text-2xl text-white"></i>
+		</div>
+	  </div>
+	</section>
+
     <!-- Sección Nosotros -->
     <section id="about" class="bg-gradient-to-b from-transparent to-gray-900/50">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
@@ -881,4 +893,3 @@
 </body>
 
 </html>
-
