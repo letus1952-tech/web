@@ -5,11 +5,9 @@ www.nexatech.org
 ## I. INFORMACIÓN GENERAL
 En cumplimiento con el deber de información dispuesto en la **Ley 34/2002 de Servicios de la Sociedad de la Información y el Comercio Electrónico (LSSI-CE)** de 11 de julio, se facilitan los siguientes datos de información general de este sitio web:  
 
-- **Titularidad del Sitio Web:** www.nexatech.org (en adelante, "Sitio Web")  
-- **Titular:** David Eduardo León  
-- **NIF:** 1031131  
-- **Dirección:** Cra 93 No. 130c - 75  
-- **Teléfono de contacto:** +57 3054874612  
+- **Titularidad del Sitio Web:** www.nexatech.org (en adelante, "Sitio Web")   
+- **Ubicación:** Bogota D.C. 
+- **Teléfono de contacto:** +57 [3054874612](https://api.whatsapp.com/send?phone=573054874612)  
 - **Email de contacto:** [contactonexatech@gmail.com](mailto:contactonexatech@gmail.com)  
 
 
@@ -86,5 +84,6 @@ El Usuario puede visualizar, copiar e imprimir contenidos del Sitio Web únicame
 
 La relación entre Usuario y NexaTech se regirá por la **legislación vigente en Colombia**.  
 Las partes se someterán a los **jueces y tribunales competentes** para la resolución de conflictos.  
+
 
 
