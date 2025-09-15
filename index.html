@@ -251,41 +251,47 @@
     
 	<!-- Sección Hero con banner personalizado -->
 	<section id="hero" class="relative p-0">
-	  <div 
-		class="hero-banner relative bg-cover bg-center bg-no-repeat" 
-		style="background-image: url();"
-	  >
-		<div class="hero-overlay absolute inset-0 bg-black bg-opacity-50 z-0"></div>
-
-		<div class="hero-content relative z-10 text-center text-white py-24 px-4">
-		  <!-- LOGO INTEGRADO -->
-		  <div class="mb-6">
-			<img src="https://raw.githubusercontent.com/eduardoleon9010/webnexa/main/img/logo.png"
-				 alt="Logo NexaTech"
-				 class="mx-auto h-20 md:h-24 object-contain logo-hero">
-		  </div>
-
-		  <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-			Transformación <span class="text-gradient">Digital</span> Innovadora
-		  </h1>
-		  <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
-			Impulsamos tu negocio hacia el futuro con soluciones tecnológicas de vanguardia y estrategias digitales innovadoras.
-		  </p>
-		  <div class="flex flex-col sm:flex-row gap-4 justify-center">
-			<a href="#services" class="btn-primary px-8 py-4 text-lg inline-flex items-center justify-center">
-			  <span>Nuestros servicios</span>
-			  <i class="fas fa-arrow-right ml-2"></i>
-			</a>
-			<a href="#contact" class="px-8 py-4 text-lg border border-gray-400 rounded-full text-white hover:bg-gray-800 transition inline-flex items-center justify-center">
-			  <span>Contáctanos</span>
-			  <i class="fas fa-phone-alt ml-2"></i>
-			</a>
-		  </div>
-		</div>
-
-		<div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
-		  <i class="fas fa-chevron-down text-2xl text-white"></i>
-		</div>
+	  <div class="hero-banner relative bg-cover bg-center bg-no-repeat"
+	       <!-- Quitar url() vacía. Si quieres una imagen de fondo, reemplaza la ruta abajo -->
+	       style="background-image: linear-gradient(90deg, rgba(29, 8, 57, 0.7), rgba(79, 37, 132, 0.5));">
+	    <div class="hero-overlay absolute inset-0 bg-black bg-opacity-50 z-0"></div>
+	
+	    <div class="hero-content relative z-10 text-center text-white py-24 px-4">
+	      <!-- LOGO INTEGRADO -->
+	      <div class="mb-6">
+	        <img
+	          src="https://cdn.jsdelivr.net/gh/eduardoleon9010/webnexa@main/img/logo.png"
+	          onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/eduardoleon9010/webnexa/main/img/logo.png';"
+	          alt="Logo NexaTech"
+	          class="mx-auto h-20 md:h-24 object-contain logo-hero"
+	          loading="lazy"
+	          decoding="async"
+	          width="240"
+	          height="96"
+	        >
+	      </div>
+	
+	      <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+	        Transformación <span class="text-gradient">Digital</span> Innovadora
+	      </h1>
+	      <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto">
+	        Impulsamos tu negocio hacia el futuro con soluciones tecnológicas de vanguardia y estrategias digitales innovadoras.
+	      </p>
+	      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+	        <a href="#services" class="btn-primary px-8 py-4 text-lg inline-flex items-center justify-center">
+	          <span>Nuestros servicios</span>
+	          <i class="fas fa-arrow-right ml-2"></i>
+	        </a>
+	        <a href="#contact" class="px-8 py-4 text-lg border border-gray-400 rounded-full text-white hover:bg-gray-800 transition inline-flex items-center justify-center">
+	          <span>Contáctanos</span>
+	          <i class="fas fa-phone-alt ml-2"></i>
+	        </a>
+	      </div>
+	    </div>
+	
+	    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+	      <i class="fas fa-chevron-down text-2xl text-white"></i>
+	    </div>
 	  </div>
 	</section>
 
@@ -862,6 +868,7 @@
 </body>
 
 </html>
+
 
 
 
